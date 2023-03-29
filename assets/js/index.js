@@ -6,7 +6,7 @@ import ISS from "./objs/iss";
 import Moon from "./objs/moon";
 
 const earthDiameter = 10;
-const earthSideralDay = 0.0001;
+const earthSideralDay = 0.00005;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -22,23 +22,24 @@ controls.enableZoom = false;
 
 const scene = new THREE.Scene();
 
-const cubeTextureLoader = new THREE.CubeTextureLoader();
-scene.background = cubeTextureLoader.load([
-    '../assets/images/stars.jpg',
-    '../assets/images/stars.jpg',
-    '../assets/images/stars.jpg',
-    '../assets/images/stars.jpg',
-    '../assets/images/stars.jpg',
-    '../assets/images/stars.jpg',
-]);
+const textureLoader = new THREE.TextureLoader();
+const sphereGeometry = new THREE.SphereGeometry(1000, 32, 32);
+const sphereMaterial = new THREE.MeshLambertMaterial({
+    map: textureLoader.load('../assets/images/stars.jpg'),
+    side: THREE.BackSide
+});
+
+const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+scene.add(sphere);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambientLight);
 
-const earth = Earth(earthDiameter);
+const {earth, clouds} = Earth(earthDiameter);
 scene.add(earth);
 
-scene.add(Sun(20, {x: 1000, y: 0, z: 0}));
+const sun = Sun(20, {x: 1000, y: 0, z: 0});
+scene.add(sun);
 
 const iss = ISS();
 scene.add(iss);
@@ -51,6 +52,7 @@ renderer.setAnimationLoop(() => {
         renderer.render(scene, camera);
 
         earth.rotation.y += earthSideralDay;
+        clouds.rotation.y += earthSideralDay * 1.5;
         iss.rotation.x += earthSideralDay * 15.5;
         moon.rotation.y += earthSideralDay / 14;
 
