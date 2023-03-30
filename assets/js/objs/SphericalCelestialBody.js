@@ -8,15 +8,15 @@ class SphericalCelestialBody {
         position,
         radius,
         mass,
-        sideralDay,
-        sideralYear,
+        siderealDay,
+        siderealYear,
         material,
     ) {
         this.position = position;
         this.radius = radius;
         this.mass = mass;
-        this.sideralDay = sideralDay;
-        this.sideralYear = sideralYear;
+        this.sideralDay = siderealDay;
+        this.sideralYear = siderealYear;
         this.texture = texture;
 
         const geometry = new THREE.SphereGeometry(this.radius, 32, 32);
