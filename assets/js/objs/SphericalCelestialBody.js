@@ -52,4 +52,17 @@ class SphericalCelestialBody {
         if (y) this.#mesh.rotation.y += y;
         if (z) this.#mesh.rotation.z += z;
     }
+
+    addLayer(size, material) {
+        const layerGeometry = new THREE.SphereGeometry(this.radius + this.radius * size / 100, 32, 32);
+        this.#mesh.add(new THREE.Mesh(layerGeometry, material));
+    }
+
+    addAtmosphere(size, color, intensity) {
+        this.addLayer(size, new THREE.MeshLambertMaterial({
+            color: color,
+            opacity: intensity,
+            transparent: true,
+        }));
+    }
 }
